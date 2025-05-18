@@ -1,15 +1,23 @@
-use std::io;
+use std::io::{self, Write};
 
 fn main() {
     // Part 1: FizzBuzz Implementation
     println!("=== FizzBuzz Challenge ===");
     
-    // TODO: Implement the FizzBuzz algorithm for numbers 1 to 20
     for i in 1..=20 {
-        // TODO: Check if i is divisible by both 3 and 5
-        // TODO: Check if i is divisible by 3
-        // TODO: Check if i is divisible by 5
-        // TODO: Print the number if it's not divisible by 3 or 5
+
+        if i%3 ==0 && i%5 ==0 {
+            println!("FizzBuzz");
+        }
+        else if i%3 ==0 {
+            println!("Fizz");
+        }
+        else if i%5 ==0 {
+            println!("Buzz");
+        }
+        else {
+            println!("{}", i);
+        }
     }
     
     // Part 2: Menu-driven Calculator
@@ -18,9 +26,9 @@ fn main() {
     // TODO: Create a variable to control the calculator loop
     let mut running = true;
     
-    // TODO: Implement the calculator loop
+    // Implement the calculator loop
     while running {
-        // TODO: Show the menu options
+        // Show the menu options
         println!("Choose an operation:");
         println!("1. Add");
         println!("2. Subtract");
@@ -28,11 +36,13 @@ fn main() {
         println!("4. Divide");
         println!("5. Exit");
         
-        // TODO: Get the user's choice
+        // Get the user's choice
+        print!("Enter your choice : ");
+        io::stdout().flush().unwrap(); // flush the output buffer to ensure the prompt appears before user input
         let mut choice = String::new();
-        // TODO: Read user input
+        io::stdin().read_line(&mut choice).expect("Failed to read line :( ");
         
-        // TODO: Convert choice to a number (with error handling)
+        // Convert choice to a number (with error handling)
         let choice: u32 = match choice.trim().parse() {
             Ok(num) => num,
             Err(_) => {
@@ -41,33 +51,41 @@ fn main() {
             }
         };
         
-        // TODO: Exit if the user chose option 5
+        // Exit if the user chose option 5
         if choice == 5 {
             // TODO: Set running to false to exit the loop
-            break;
+            running = false;
+            println!("Exiting the calculator. Goodbye!");
         }
         
-        // TODO: Get the two input numbers from the user
-        // First number
-        // TODO: Read first number
+        print!("Enter the first number: ");
+        io::stdout().flush().unwrap();
+        let mut first_number = String::new();
+        io::stdin().read_line(&mut first_number).expect("Failed to read line :( ");
+
+
+        print!("Enter the second number: ");
+        io::stdout().flush().unwrap();
+        let mut second_number = String::new();
+        io::stdin().read_line(&mut second_number).expect("Failed to read line :( ");
         
-        // Second number
-        // TODO: Read second number
+        match choice {
+            1 => println!("Result: {}", first_number.trim().parse::<f64>().unwrap() + second_number.trim().parse::<f64>().unwrap()), // Handle addition
+            2 => println!("Result: {}", first_number.trim().parse::<f64>().unwrap() - second_number.trim().parse::<f64>().unwrap()), // Handle subtraction
+            3 => println!("Result: {}", first_number.trim().parse::<f64>().unwrap() * second_number.trim().parse::<f64>().unwrap()), // Handle multiplication
+            4 => println!("Result: {}", first_number.trim().parse::<f64>().unwrap() / second_number.trim().parse::<f64>().unwrap()), // Handle division
+            _ => println!("Invalid option. Please try again."),
+        }
         
-        // TODO: Perform the selected operation using match or if statements
-        // match choice {
-        //    1 => // Handle addition
-        //    2 => // Handle subtraction
-        //    3 => // Handle multiplication
-        //    4 => // Handle division (remember to check for division by zero)
-        //    _ => println!("Invalid option. Please try again."),
-        // }
+        print!("Do you want to perform another calculation? (y/n): ");
+        io::stdout().flush().unwrap();
+        let mut response = String::new();
+        io::stdin().read_line(&mut response).expect("Failed to read line :( ");
         
-        // TODO: Ask if the user wants to perform another calculation
-        println!("Do you want to perform another calculation? (y/n): ");
-        // TODO: Read user's response
-        
-        // TODO: Set running to false if the user doesn't want to continue
+        if response.trim().to_lowercase() != "y" {
+            running = false;
+            println!("Exiting the calculator. Goodbye!");
+        }
     }
     
     println!("Thank you for using the calculator!");
