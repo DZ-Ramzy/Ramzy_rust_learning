@@ -1,6 +1,7 @@
 use std::num::ParseIntError;
 use std::fmt;
 
+
 // Part 1: Configuration Parser
 // Create a configuration struct and parser that returns Results
 
@@ -109,9 +110,9 @@ enum ValidationError {
 impl fmt::Display for ValidationError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
-            ValidationError::InvalidId => write!(f, /* TODO */),
-            ValidationError::NameTooShort => write!(f, /* TODO */),
-            ValidationError::InvalidAge => write!(f, /* TODO */),
+            ValidationError::InvalidId => write!(f, "Invalid user ID: ID cannot be 0"),
+            ValidationError::NameTooShort => write!(f, "Name is too short: must be at least 2 characters"),
+            ValidationError::InvalidAge => write!(f, "Invalid age: must be at least 18 years old"),
         }
     }
 }
@@ -120,15 +121,15 @@ impl fmt::Display for ValidationError {
 fn validate_user(user: &User) -> Result<(), ValidationError> {
     // Check ID validity
     if user.id == 0 {
-        return /* TODO */;
+        return Err(ValidationError::InvalidId);
     }
     
     if user.name.len() < 2 {
-        return /* TODO */;
+        return Err(ValidationError::NameTooShort);
     }
     
     if user.age < 18 {
-        return /* TODO */;
+        return Err(ValidationError::InvalidAge);
     }
     
     Ok(())
@@ -188,6 +189,19 @@ fn process_data(config_str: &str, user_id: &str, user_name: &str, user_age: &str
     };
     
     validate_user(&user)?;
+    
+    // Use the config values to perform some meaningful processing
+    if user.name == config.username {
+        println!("User {} matches configured username", user.name);
+    }
+    
+    if age > config.timeout {
+        println!("User age exceeds configured timeout");
+    }
+    
+    if id > config.max_retries {
+        println!("User ID exceeds configured max retries");
+    }
     
     Ok(())
 }
